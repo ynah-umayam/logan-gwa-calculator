@@ -1,0 +1,25 @@
+.lp__full-page-wrapper {
+  min-height: 92vh;
+  position: relative;
+  touch-action: none;
+  transform: translate3d(0px, 0px, 0px);
+  padding-bottom: 24px;
+}
+
+.lp-section {
+  position: relative;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 100%;
+  display: block;
+}
+
+.lp__text {
+  text-shadow: 1px 1px 2px #fff;
+}
+
+.ls-footer {
+  position: relative;
+  width: 100%;
+}

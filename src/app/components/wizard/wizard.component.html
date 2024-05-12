@@ -1,0 +1,24 @@
+<div class="flex items-center justify-center">
+  <div class="w-3/4">
+    <lp-wizard-tracker [stepCount]="stepCount"></lp-wizard-tracker>
+
+    <div
+      class="lp-wizard__enter-details pt-6"
+      [ngClass]="{ hidden: stepCount !== 1 }"
+    >
+      <ng-content select="#lp-wizard__enter-details"></ng-content>
+    </div>
+    <div
+      class="lp-wizard__review-details pt-6"
+      [ngClass]="{ hidden: stepCount !== 2 }"
+    >
+      <ng-content select="#lp-wizard__review-details"></ng-content>
+    </div>
+    <div
+      class="lp-wizard__view-result pt-6"
+      [ngClass]="{ hidden: stepCount !== 3 }"
+    >
+      <ng-content select="#lp-wizard__view-result"></ng-content>
+    </div>
+  </div>
+</div>

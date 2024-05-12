@@ -1,29 +1,68 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { FileService } from './services/file.service';
+import { of } from 'rxjs';
+import { mockRecords } from './models/mocks/record.mock';
+import { AppModule } from './app.module';
+
+const createFakeFile = (fileName: string = 'test'): File => {
+  const blob = new Blob([''], { type: 'image/bmp' });
+  blob['lastModifiedDate'] = '';
+  blob['name'] = fileName;
+  return <File>blob;
+};
+
+class MockFileService {
+  getData$ = () => of(mockRecords);
+}
 
 describe('AppComponent', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [RouterTestingModule],
-    declarations: [AppComponent]
-  }));
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
-
-  it(`should have as title 'logan-gwa-calculator'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('logan-gwa-calculator');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule, AppModule],
+      declarations: [AppComponent],
+      providers: [{ provide: FileService, useClass: MockFileService }],
+    });
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('logan-gwa-calculator app is running!');
+  });
+
+  it('should update recordForms', () => {
+    component.upload();
+    expect(component.recordForms.value).toEqual(mockRecords);
+  });
+  it('should remove item from recordForms', () => {
+    component.upload();
+    component.onDeleteRow(1);
+    expect(component.recordForms.value).toEqual([{ ...mockRecords[0] }]);
+  });
+  it('should calculate grade weighted average', () => {
+    component.upload();
+    component.calculate();
+    expect(component.gradeWeightedAverage).toEqual('1.39');
+  });
+  it('should set step count to 3', () => {
+    component.upload();
+    component.calculate();
+    expect(component.stepCount).toEqual(3);
+  });
+  it('should set step count to 1', () => {
+    component.stepCount = 3;
+    component.reset();
+    expect(component.stepCount).toEqual(1);
+  });
+  it('should deduct 1 from step count to 2', () => {
+    component.stepCount = 3;
+    component.back();
+    expect(component.stepCount).toEqual(2);
+  });
+  it('should set files', () => {
+    component.onFileChange([createFakeFile('test1')]);
+    expect(component.files).toEqual([createFakeFile('test1')]);
   });
 });

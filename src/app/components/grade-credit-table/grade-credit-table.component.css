@@ -1,0 +1,8 @@
+.lp-grade-credit-table__column-subject {
+  width: 80%;
+}
+
+.lp-grade-credit-table__column-grade,
+.lp-grade-credit-table__column-credit {
+  width: 10%;
+}
