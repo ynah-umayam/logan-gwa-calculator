@@ -13,8 +13,8 @@ export class FileSizePipe implements PipeTransform {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     const i = Math.floor(Math.log(size) / Math.log(base));
     const formattedResult =
-      Math.ceil((size / Math.pow(base, i)) * Math.pow(10, decimals)) /
-      Math.pow(10, decimals);
+      Math.ceil((size / Math.pow(base, i)) * Math.pow(10, decimalPlace)) /
+      Math.pow(10, decimalPlace);
     return `${formattedResult.toFixed(decimalPlace)} ${sizes[i]}`;
   }
 }
